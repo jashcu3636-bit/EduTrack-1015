@@ -26,9 +26,15 @@ const Login = () => {
       await login(email, password);
       navigate('/');
     } catch (err) {
-      setError(
-        err.response?.data?.message || 'Login failed. Please check your credentials.'
-      );
+      if (!err.response) {
+        setError(
+          'Cannot connect to the backend server. Please ensure the backend API is running.'
+        );
+      } else {
+        setError(
+          err.response?.data?.message || err.message || 'Login failed. Please check your credentials.'
+        );
+      }
     } finally {
       setLoading(false);
     }

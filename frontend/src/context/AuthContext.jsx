@@ -34,11 +34,13 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const res = await authAPI.login({ email, password });
-    if (res.data.success) {
+    if (res.data && res.data.success && res.data.token) {
       setToken(res.data.token);
       setUser(res.data.user);
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
+    } else {
+      throw new Error(res.data?.message || 'Invalid response from API server');
     }
     return res.data;
   };
