@@ -1,0 +1,14 @@
+{
+  "name": "mern-student-management-system",
+  "version": "1.0.0",
+  "description": "Complete MERN Stack Student Management System with JWT Authentication",
+  "scripts": {
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm run dev",
+    "seed": "cd backend && npm run seed"
+  },
+  "keywords": ["mern", "mongodb", "express", "react", "nodejs", "student-management", "jwt-authentication"],
+  "author": "EduTrack Developer",
+  "license": "MIT"
+}
+
