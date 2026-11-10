@@ -1,0 +1,12 @@
+# Netlify configuration for EduTrack Vite React Frontend
+
+[build]
+  base = "frontend"
+  publish = "dist"
+  command = "npm run build"
+
+# Redirect all SPA routes to index.html with 200 status code
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Complete MERN Stack Student Management System with JWT Authentication",
   "scripts": {
+    "build": "npm --prefix frontend run build",
     "server": "cd backend && npm run dev",
     "client": "cd frontend && npm run dev",
     "seed": "cd backend && npm run seed"

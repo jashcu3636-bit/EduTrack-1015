@@ -45,11 +45,16 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`===============================================`);
-  console.log(`🚀 Server running in ${process.env.NODE_ENV || 'development'} mode`);
-  console.log(`🔗 API Server URL: http://localhost:${PORT}`);
-  console.log(`📋 Health Check:   http://localhost:${PORT}/api/health`);
-  console.log(`===============================================`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`===============================================`);
+    console.log(`🚀 Server running in ${process.env.NODE_ENV || 'development'} mode`);
+    console.log(`🔗 API Server URL: http://localhost:${PORT}`);
+    console.log(`📋 Health Check:   http://localhost:${PORT}/api/health`);
+    console.log(`===============================================`);
+  });
+}
+
+module.exports = app;
+
 
