@@ -15,11 +15,12 @@ const app = express();
 // Cross-Origin Resource Sharing (CORS) setup
 app.use(
   cors({
-    origin: '*', // Allows development React frontend (Vite/localhost)
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    origin: '*', // Allows development and production frontends (Netlify / Vite / localhost)
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
+app.options('*', cors());
 
 // Body Parser Middleware
 app.use(express.json());
