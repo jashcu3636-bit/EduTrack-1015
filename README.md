@@ -16,7 +16,7 @@ A comprehensive, production-grade **MERN (MongoDB, Express.js, React 19, Node.js
 2. [🏗️ System Architecture](#️-system-architecture)
 3. [📋 Prerequisites](#-prerequisites)
 4. [🛠️ Step-by-Step Installation & Setup](#️-step-by-step-installation--setup)
-5. [🧭 MongoDB Compass Configuration](#-mongodb-compass-configuration)
+5. [🚀 Cloud Deployment Guide (Render / Netlify / Vercel)](#-cloud-deployment-guide-render--netlify--vercel)
 6. [🔑 Pre-Seeded Demo Accounts](#-pre-seeded-demo-accounts)
 7. [🎯 How to Use the Application](#-how-to-use-the-application)
 8. [📡 Complete REST API Reference](#-complete-rest-api-reference)
@@ -131,13 +131,16 @@ Before setting up the project, make sure you have the following installed on you
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/pranavb04/EduTrack.git
-cd EduTrack
+git clone https://github.com/jashcu3636-bit/EduTrack-1015.git
+cd EduTrack-1015
 ```
 
 ---
 
-### 2. Configure MongoDB Compass
+### 2. Configure Database (MongoDB Compass Local or Atlas Cloud)
+You can connect either to a local MongoDB instance via **MongoDB Compass** or a cloud cluster via **MongoDB Atlas**:
+
+**Option A: MongoDB Compass (Local)**
 1. Open **MongoDB Compass**.
 2. In the **New Connection** bar, enter the connection URI:
    ```text
@@ -151,6 +154,12 @@ cd EduTrack
 > - Locate **MongoDB Server** (or **MongoDB Database Server**) in the services list.
 > - Right-click and choose **Start** (or **Restart**).
 > - In Compass, click **Connect** again.
+
+**Option B: MongoDB Atlas (Cloud)**
+1. Create a free M0 cluster on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+2. Under **Network Access**, allow access from anywhere (`0.0.0.0/0`).
+3. Under **Database Access**, create a database user with read/write permissions.
+4. Copy the Node.js driver connection string and use it as your `MONGO_URI` (e.g. `mongodb+srv://<username>:<password>@cluster0.xxxx.mongodb.net/student_management?retryWrites=true&w=majority`).
 
 ---
 
@@ -202,6 +211,33 @@ cd EduTrack
    ```text
    http://localhost:5173
    ```
+
+---
+
+## 🚀 Cloud Deployment Guide (Render / Netlify / Vercel)
+
+This repository includes ready-to-use configuration files (`netlify.toml`, `frontend/public/_redirects`, and `vercel.json`) for cloud hosting:
+
+### Option 1: Backend on Render + Frontend on Netlify
+1. **Deploy Backend on [Render](https://render.com/):**
+   - Create a **New Web Service** connected to this repository.
+   - **Root Directory:** `backend`
+   - **Build Command:** `npm install`
+   - **Start Command:** `node server.js`
+   - **Environment Variables:**
+     - `MONGO_URI`: Your MongoDB Atlas connection string
+     - `JWT_SECRET`: Your JWT secret key
+     - `JWT_EXPIRE`: `7d`
+     - `NODE_ENV`: `production`
+2. **Deploy Frontend on [Netlify](https://www.netlify.com/):**
+   - Import the repository. `netlify.toml` automatically sets `base = "frontend"`, `publish = "dist"`, and SPA redirects (`/* -> /index.html 200`).
+   - **Environment Variables:**
+     - `VITE_API_BASE_URL`: `https://<your-render-service>.onrender.com/api`
+   - Trigger a deploy so Vite bundles the API base URL.
+
+### Option 2: Multi-Service Deployment on Vercel
+- `vercel.json` is pre-configured at the root to deploy `backend` (`@vercel/express`) and `frontend` (`@vercel/vite`) under one domain with `/api/(.*)` routed to `backend`.
+- Configure `MONGO_URI` and `JWT_SECRET` in Vercel Project Settings &rarr; Environment Variables.
 
 ---
 
@@ -300,6 +336,8 @@ EduTrack/
 │   └── package.json
 │
 ├── frontend/
+│   ├── public/
+│   │   └── _redirects                # Netlify SPA routing fallback
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── Navbar.jsx            # Top navbar with user pill & logout
@@ -323,10 +361,13 @@ EduTrack/
 │   │   │   └── api.js                # Axios instance with Bearer JWT interceptor
 │   │   ├── App.jsx                   # Master router & modal state manager
 │   │   └── index.css                 # Tailwind CSS styles
-│   ├── vite.config.js                # Vite build config with Tailwind
+│   ├── vite.config.js                # Vite build config with Tailwind & dev proxy
 │   └── package.json
 │
 ├── .gitignore                    # Root gitignore (ignores node_modules, .env)
+├── netlify.toml                  # Netlify build & SPA redirect configuration
+├── vercel.json                   # Vercel multi-service deployment configuration
+├── package.json                  # Root helper scripts
 ├── SYSTEM_EXPLANATION_AND_WORKING.md # In-depth technical architecture guide
 └── README.md                     # Comprehensive project documentation
 ```
